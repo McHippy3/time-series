@@ -34,7 +34,7 @@ df_sales = df_sales.reset_index()
 df_sales = df_sales.groupby('Date').Sales.sum().reset_index()
 print(df_sales.head(10))
 
-plt.title("Date vs Sales")
+plt.title("Date vs Sales (Single Store)")
 plt.xlabel("Date")
 plt.ylabel("Sales Quantity")
 plt.scatter(df_sales['Date'], df_sales['Sales'])
@@ -91,7 +91,7 @@ model = keras.Sequential()
 model.add(keras.layers.LSTM(4, batch_input_shape=(1, X_train.shape[1], X_train.shape[2]), stateful=True))
 model.add(keras.layers.Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(X_train, y_train, epochs=1000, batch_size=1, verbose=1, shuffle=False)
+model.fit(X_train, y_train, epochs=150, batch_size=1, verbose=1, shuffle=False)
 
 y_pred = model.predict(X_test,batch_size=1)
 
@@ -126,10 +126,13 @@ df_sales_pred = pd.merge(df_sales,df_result,on='Date',how='left')
 
 #Plot actual and predicted
 plt.clf()
-plt.title("Predicted vs Actual")
+plt.title("Predicted vs Actual (Single Store)")
 plt.xlabel("Date")
 plt.ylabel("Sales Quantity")
 actual_plot, = plt.plot(df_sales_pred['Date'][-100:], df_sales_pred['Sales'][-100:], '-o', c='b', label="Actual")
 predicted_plot, = plt.plot(df_sales_pred['Date'][-100:], df_sales_pred['pred_value'][-100:], '-o', c='r', label="Predicted")
 plt.legend(handles=[actual_plot, predicted_plot])
 plt.show()
+
+#Results
+#loss: 0.0100
